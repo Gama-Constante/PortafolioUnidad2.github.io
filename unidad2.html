@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unidad 2 - Los CMMP</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style/styles.css">
+    <style>
+        .topic-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .topic-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient);
+        }
+
+        .topic-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(99, 102, 241, 0.2);
+            border-color: var(--primary);
+        }
+
+        .topic-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+            transition: all 0.3s;
+        }
+
+        .topic-card:hover .topic-icon {
+            transform: rotate(5deg) scale(1.1);
+        }
+
+        .topic-title {
+            color: var(--dark);
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .topic-description {
+            color: #64748b;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+
+        .api-example {
+            background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            border-left: 4px solid var(--primary);
+        }
+
+        .api-name {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .feature-list li {
+            padding: 0.75rem 0;
+            padding-left: 2rem;
+            position: relative;
+            color: #475569;
+            transition: all 0.3s;
+        }
+
+        .feature-list li::before {
+            content: '\f00c';
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-size: 1rem;
+        }
+
+        .feature-list li:hover {
+            padding-left: 2.5rem;
+            color: var(--primary);
+        }
+
+        .use-case-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin: 0.25rem;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+        }
+
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .platform-item {
+            background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .platform-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.2);
+        }
+
+        .platform-item i {
+            font-size: 3rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .info-alert {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-left: 4px solid #3b82f6;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+
+        .info-alert i {
+            color: #3b82f6;
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-code"></i>
+                <span>Portafolio CMMP</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="fas fa-home me-1"></i>Inicio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="unidad1.html">
+                            <i class="fas fa-book me-1"></i>Unidad 1
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="unidad2.html">
+                            <i class="fas fa-plug me-1"></i>Unidad 2
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">
+                            <i class="fas fa-lock me-1"></i>Unidad 3
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">
+                            <i class="fas fa-lock me-1"></i>Unidad 4
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle profile-link" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-users-cog"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="equipo.html">
+                                <i class="fas fa-users me-2"></i>Conoce al Equipo
+                            </a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mx-auto text-center text-white">
+                    <h1 class="display-4 fw-bold mb-3 animate-slide-in">Unidad 2</h1>
+                    <h2 class="h3 mb-4 fade-in-delay-1">Implementación de APIs y Servicios</h2>
+                    <p class="lead opacity-90 fade-in-delay-2">
+                        Exploración de APIs modernas para Geolocalización, Redes Sociales, Bases de Datos, 
+                        Plataformas On-Line y Streaming
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="py-5">
+        <div class="container">
+            <!-- Geolocalización -->
+            <div class="topic-card fade-in">
+                <div class="topic-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <h2 class="topic-title">1. Geolocalización</h2>
+                <p class="topic-description">
+                    La geolocalización permite a las aplicaciones web determinar y utilizar la ubicación geográfica de los usuarios 
+                    para ofrecer servicios personalizados basados en su posición.
+                </p>
+
+                <h3 class="h5 fw-bold text-primary mt-4 mb-3">APIs Principales de Geolocalización</h3>
+
+                <div class="api-example">
+                    <div class="api-name"><i class="fas fa-map-marked-alt me-2"></i>Google Maps API</div>
+                    <p class="mb-2">La API de mapas más utilizada a nivel mundial, ofreciendo una amplia gama de servicios de localización.</p>
+                    <ul class="feature-list">
+                        <li>Visualización de mapas interactivos personalizables</li>
+                        <li>Cálculo de rutas y direcciones optimizadas</li>
+                        <li>Geocodificación y geocodificación inversa</li>
+                        <li>Información de lugares (Places API)</li>
+                        <li>Street View para vista panorámica</li>
+                    </ul>
+                    <div class="mt-3">
+                        <span class="use-case-badge">Aplicaciones de delivery</span>
+                        <span class="use-case-badge">Rastreo de flotas</span>
+                        <span class="use-case-badge">Turismo</span>
+                    </div>
+                </div>
+
+                <div class="api-example">
+                    <div class="api-name"><i class="fas fa-location-arrow me-2"></i>Geolocation API (W3C)</div>
+                    <p class="mb-2">API nativa del navegador que permite acceder a la ubicación del dispositivo del usuario.</p>
+                    <ul class="feature-list">
+                        <li>Acceso a coordenadas GPS del dispositivo</li>
+                        <li>Seguimiento de posición en tiempo real</li>
+                        <li>Detección automática de ubicación</li>
+                        <li>Compatible con dispositivos móviles y desktop</li>
+                    </ul>
+                    <div class="code-block">
+navigator.geolocation.getCurrentPosition(
+    (position) => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        console.log(`Ubicación: ${lat}, ${lon}`);
+    },
+    (error) => console.error(error)
+);
+                    </div>
+                </div>
+
+                <div class="api-example">
+                    <div class="api-name"><i class="fas fa-satellite me-2"></i>Mapbox API</div>
+                    <p class="mb-2">Alternativa moderna a Google Maps con enfoque en personalización y rendimiento.</p>
+                    <ul class="feature-list">
+                        <li>Mapas vectoriales de alta calidad</li>
+                        <li>Estilos de mapas totalmente personalizables</li>
+                        <li>Navegación turn-by-turn</li>
+                        <li>Geocodificación avanzada</li>
+                    </ul>
+                </div>
+
+                <div class="info-alert">
+                    <i class="fas fa-lightbulb"></i>
+                    <strong>Casos de Uso:</strong> Aplicaciones de entrega a domicilio, sistemas de rastreo de vehículos, 
+                    aplicaciones de turismo, redes sociales basadas en ubicación, búsqueda de servicios cercanos.
+                </div>
+            </div>
+
+            <!-- Redes Sociales -->
+            <div class="topic-card fade-in">
+                <div class="topic-icon">
+                    <i class="fas fa-share-alt"></i>
+                </div>
+                <h2 class="topic-title">2. Redes Sociales</h2>
+                <p class="topic-description">
+                    Las APIs de redes sociales permiten integrar funcionalidades sociales en aplicaciones web, 
+                    facilitando la autenticación, compartir contenido y acceder a datos de perfiles de usuarios.
+                </p>
+
+                <h3 class="h5 fw-bold text-primary mt-4 mb-3">APIs de Redes Sociales Principales</h3>
+
+                <div class="api-example">
+                    <div class="api-name"><i class="fab fa-facebook me-2"></i>Facebook Graph API</div>
+                    <p class="mb-2">API completa para interactuar con la plataforma de Facebook e Instagram.</p>
+                    <ul class="feature-list">
+                        <li>Autenticación mediante Facebook Login</li>
+                        <li>Publicación de contenido en páginas y perfiles</li>
+                        <li>Acceso a datos de usuario (con permisos)</li>
+                        <li>Análisis de métricas y estadísticas</li>
+                        <li>Gestión de campañas publicitarias</li>
+                    </ul>
+                    <div class="mt-3">
+                        <span class="use-case-badge">Social Login</span>
+                        <span class="use-case-badge">Marketing</span>
+                        <span class="use-case-badge">Analytics</span>
+                    </div>
+                </div>
+
+                <div class="api-example">
+                    <div class="api-name"><i class="fab fa-twitter me-2"></i>Twitter API (X API)</div>
+                    <p class="mb-2">API para integrar funcionalidades de Twitter/X en aplicaciones.</p>
+                    <ul class="feature-list">
+                        <li>Publicación y programación de tweets</li>
+                        <li>Búsqueda de tweets y tendencias</li>
+                        <li>Gestión de timeline y menciones</li>
+                        <li>Análisis de engagement</li>
+                        <li>Streaming de tweets en tiempo real</li>
+                    </ul>
+                </div>
+
+                <div class="api-example">
+                    <div class="api-name"><i class="fab fa-instagram me-2"></i>Instagram Basic Display API</div>
+                    <p class="mb-2">API para mostrar contenido de Instagram en aplicaciones web.</p>
+                    <ul class="feature-list">
+                        <li>Visualización de fotos y videos del usuario</li>
+                        <li>Acceso a información de perfil</li>
+                        <li>Integración de galerías de Instagram</li>
+                    </ul>
+                </div>
+
+                <div class="api-example">
+                    <div class="api-name"><i class="fab fa-linkedin me-2"></i>LinkedIn API</div>
+                    <p class="mb-2">API profesional para integración con la red social de negocios.</p>
+                    <ul class="feature-list">
+                        <li>Autenticación profesional</li>
+                        <li>Compartir contenido en perfiles de empresa</li>
+                        <li>Acceso a datos profesionales del usuario</li>
+                        <li>Publicación de ofertas de empleo</li>
+                    </ul>
+                </div>
+
+                <div class="info-alert">
+                    <i class="fas fa-lightbulb"></i>
+                    <strong>Casos de Uso:</strong> Sistemas de autenticación social (OAuth), compartir contenido, 
+                    agregadores de redes sociales, herramientas de marketing, análisis de sentimientos.
+                </div>
+            </div>
+
+            <!-- Bases de Datos -->
+            <div class="topic-card fade-in">
+                <div class="topic-icon">
+                    <i class="fas fa-database"></i>
+                </div>
+                <h2 class="topic-title">3. Bases de Datos como Servicio</h2>
+                <p class="topic-description">
+                    Plataformas que ofrecen bases de datos en la nube mediante APIs REST, permitiendo almacenamiento 
+                    y gestión de datos sin necesidad de configurar servidores propios.
+                </p>
+
+                <h3 class="h5 fw-bold text-primary mt-4 mb-3">Plataformas Database-as-a-Service (DBaaS)</h3>
+
+                <div class="api-example">
+                    <div class="api-name"><i class="fas fa-fire me-2"></i>Firebase Realtime Database / Firestore</div>
+                    <p class="mb-2">Base de datos NoSQL en tiempo real de Google, ideal para aplicaciones móviles y web.</p>
+                    <ul class="feature-list">
+                        <li>Sincronización de datos en tiempo real</li>
+                        <li>Modo offline automático</li>
+                        <li>Escalabilidad automática</li>
+                        <li>Autenticación integrada</li>
+                        <li>Consultas complejas (Firestore)</li>
+                        <li>Seguridad mediante reglas</li>
+                    </ul>
+                    <div class="code-block">
+// Ejemplo Firebase Firestore
+import { getFirestore, collection, addDoc } from 'firebase/firestore';
+
+const db = getFirestore();
+await addDoc(collection(db, 'usuarios'), {
+    nombre: 'Juan',
+    email: 'juan@example.com',
+    timestamp: new Date()
+});
+                    </div>
+                    <div class="mt-3">
+                        <span class="use-case-badge">Apps móviles</span>
+                        <span class="use-case-badge">Chat en tiempo real</span>
+                        <span class="use-case-badge">Colaboración</span>
+                    </div>
+                </div>
+
+                <div class="api-example">
+                    <div class="api-name"><i class="fas fa-bolt me-2"></i>Supabase</div>
+                    <p class="mb-2">Alternativa open-source a Firebase con base de datos PostgreSQL.</p>
+                    <ul class="feature-list">
+                        <li>Base de datos PostgreSQL completa</li>
+                        <li>API REST automática</li>
+                        <li>Autenticación y autorización</li>
+                        <li>Almacenamiento de archivos</li>
+                        <li>Funciones serverless</li>
+                        <li>Subscripciones en tiempo real</li>
+                    </ul>
+                </div>
+
+                <div class="api-example">
+                    <div class="api-name"><i class="fas fa-cloud me-2"></i>MongoDB Atlas</div>
+                    <p class="mb-2">Base de datos NoSQL basada en documentos, totalmente gestionada en la nube.</p>
+                    <ul class="feature-list">
+                        <li>Modelo de datos flexible (JSON/BSON)</li>
+                        <li>Escalabilidad horizontal</li>
+                        <li>Búsqueda de texto completo</li>
+                        <li>Agregaciones complejas</li>
+                        <li>Replicación automática</li>
+                    </ul>
+                </div>
+
+                <div class="api-example">
+                    <div class="api-name"><i class="fas fa-server me-2"></i>AWS DynamoDB</div>
+                    <p class="mb-2">Base de datos NoSQL serverless de Amazon Web Services.</p>
+                    <ul class="feature-list">
+                        <li>Rendimiento de un solo dígito de milisegundos</li>
+                        <li>Escalado automático</li>
+                        <li>Modelo de pago por uso</li>
+                        <li>Alta disponibilidad</li>
+                    </ul>
+                </div>
+
+                <div class="info-alert">
+                    <i class="fas fa-lightbulb"></i>
+                    <strong>Casos de Uso:</strong> Aplicaciones web y móviles, sistemas de gestión de contenidos, 
+                    aplicaciones de IoT, plataformas de comercio electrónico, sistemas de análisis en tiempo real.
+                </div>
+            </div>
+
+            <!-- Plataformas On-Line -->
+            <div class="topic-card fade-in">
+                <div class="topic-icon">
+                    <i class="fas fa-cloud"></i>
+                </div>
+                <h2 class="topic-title">4. Plataformas On-Line y Servicios Cloud</h2>
+                <p class="topic-description">
+                    APIs de plataformas en línea que ofrecen diversos servicios cloud como almacenamiento, 
+                    procesamiento, comunicaciones y más, facilitando el desarrollo de aplicaciones escalables.
+                </p>
+
+                <h3 class="h5 fw-bold text-primary mt-4 mb-3">Principales Plataformas Cloud</h3>
+
+                <div class="platform-grid">
+                    <div class="platform-item">
+                        <i class="fab fa-aws"></i>
+                        <h4 class="h6 fw-bold mt-2">Amazon Web Services</h4>
+                        <p class="small text-muted mb-0">S3, Lambda, EC2, RDS</p>
+                    </div>
+                    <div class="platform-item">
+                        <i class="fab fa-google"></i>
+                        <h4 class="h6 fw-bold mt-2">Google Cloud Platform</h4>
+                        <p class="small text-muted mb-0">Cloud Functions, Storage, BigQuery</p>
+                    </div>
+                    <div class="platform-item">
+                        <i class="fab fa-microsoft"></i>
+                        <h4 class="h6 fw-bold mt-2">Microsoft Azure</h4>
+                        <p class="small text-muted mb-0">Azure Functions, Blob Storage, Cosmos DB</p>
+                    </div>
+                    <div class="platform-item">
+                        <i class="fas fa-box"></i>
+                        <h4 class="h6 fw-bold mt-2">Dropbox API</h4>
+                        <p class="small text-muted mb-0">Almacenamiento y sincronización</p>
+                    </div>
+                    <div class="platform-item">
+                        <i class="fab fa-google-drive"></i>
+                        <h4 class="h6 fw-bold mt-2">Google Drive API</h4>
+                        <p class="small text-muted mb-0">Gestión de archivos en la nube</p>
+                    </div>
+                    <div class="platform-item">
+                        <i class="fas fa-envelope"></i>
+                        <h4 class="h6 fw-bold mt-2">SendGrid / Mailgun</h4>
+                        <p class="small text-muted mb-0">Servicios de email transaccional</p>
+                    </div>
+                </div>
+
+                <div class="api-example">
+                    <div class="api-name"><i class="fas fa-folder-open me-2"></i>Google Drive API</div>
+                    <p class="mb-2">API para integrar almacenamiento y gestión de archivos de Google Drive.</p>
+                    <ul class="feature-list">
+                        <li>Subida y descarga de archivos</li>
+                        <li>Gestión de permisos y compartición</li>
+                        <li>Búsqueda de archivos</li>
+                        <li>Sincronización automática</li>
+                        <li>Integración con Google Workspace</li>
+                    </ul>
+                </div>
+
+                <div class="api-example">
+                    <div class="api-name"><i class="fab fa-aws me-2"></i>AWS S3 API</div>
+                    <p class="mb-2">Servicio de almacenamiento de objetos altamente escalable.</p>
+                    <ul class="feature-list">
+                        <li>Almacenamiento ilimitado de archivos</li>
+                        <li>Alta durabilidad (99.999999999%)</li>
+                        <li>Control de acceso granular</li>
+                        <li>Versionado de objetos</li>
+                        <li>Hospedaje de sitios web estáticos</li>
+                    </ul>
+                </div>
+
+                <div class="api-example">
+                    <div class="api-name"><i class="fas fa-paper-plane me-2"></i>Twilio API</div>
+                    <p class="mb-2">Plataforma de comunicaciones programables (SMS, voz, video).</p>
+                    <ul class="feature-list">
+                        <li>Envío de SMS y WhatsApp programático</li>
+                        <li>Llamadas de voz automatizadas</li>
+                        <li>Verificación de números telefónicos</li>
+                        <li>Videollamadas</li>
+                    </ul>
+                    <div class="code-block">
+// Ejemplo Twilio - Enviar SMS
+const accountSid = 'TU_ACCOUNT_SID';
+const authToken = 'TU_AUTH_TOKEN';
+const client = require('twilio')(accountSid, authToken);
+
+client.messages.create({
+    body: '¡Tu código de verificación es: 123456!',
+    from: '+1234567890',
+    to: '+0987654321'
+});
+                    </div>
+                </div>
+
+                <div class="info-alert">
+                    <i class="fas fa-lightbulb"></i>
+                    <strong>Casos de Uso:</strong> Almacenamiento de archivos, procesamiento serverless, 
+                    envío de notificaciones, servicios de email, respaldos automáticos, CDN y distribución de contenido.
+                </div>
+            </div>
+
+            <!-- Plataformas Streaming -->
+            <div class="topic-card fade-in">
+                <div class="topic-icon">
+                    <i class="fas fa-video"></i>
+                </div>
+                <h2 class="topic-title">5. Plataformas de Streaming</h2>
+                <p class="topic-description">
+                    APIs que permiten integrar servicios de contenido multimedia en tiempo real, 
+                    incluyendo video, audio y transmisiones en vivo.
+                </p>
+
+                <h3 class="h5 fw-bold text-primary mt-4 mb-3">APIs de Streaming Multimedia</h3>
+
+                <div class="api-example">
+                    <div class="api-name"><i class="fab fa-youtube me-2"></i>YouTube Data API</div>
+                    <p class="mb-2">API oficial para integrar funcionalidades de YouTube en aplicaciones.</p>
+                    <ul class="feature-list">
+                        <li>Búsqueda de videos y canales</li>
+                        <li>Obtención de información de videos</li>
+                        <li>Gestión de listas de reproducción</li>
+                        <li>Upload de videos</li>
+                        <li>Comentarios y estadísticas</li>
+                        <li>Transmisiones en vivo</li>
+                    </ul>
+                    <div class="mt-3">
+                        <span class="use-case-badge">Agregadores de contenido</span>
+                        <span class="use-case-badge">Portales educativos</span>
+                        <span class="use-case-badge">Analytics</span>
+                    </div>
+                </div>
+
+                <div class="api-example">
+                    <div class="api-name"><i class="fab fa-spotify me-2"></i>Spotify Web API</div>
+                    <p class="mb-2">API para integrar el catálogo musical de Spotify y controlar la reproducción.</p>
+                    <ul class="feature-list">
+                        <li>Búsqueda de canciones, álbumes y artistas</li>
+                        <li>Control de reproducción</li>
+                        <li>Gestión de playlists</li>
+                        <li>Recomendaciones personalizadas</li>
+                        <li>Análisis de audio</li>
+                    </ul>
+                    <div class="code-block">
+// Ejemplo Spotify API - Buscar artista
+const searchArtist = async (query) => {
+    const response = await fetch(
+        `https://api.spotify.com/v1/search?q=${query}&type=artist`,
+        {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        }
+    );
+    const data = await response.json();
+    return data.artists.items;
+};
+                    </div>
+                </div>
+
+                <div class="api-example">
+                    <div class="api-name"><i class="fab fa-twitch me-2"></i>Twitch API</div>
+                    <p class="mb-2">API para integrar streaming de videojuegos y contenido en vivo.</p>
+                    <ul class="feature-list">
+                        <li>Información de streams en vivo</li>
+                        <li>Datos de canales y usuarios</li>
+                        <li>Gestión de clips y videos</li>
+                        <li>Sistema de subscripciones</li>
+                        <li>Chat y moderación</li>
+                    </ul>
+                </div>
+
+                <div class="api-example">
+                    <div class="api-name"><i class="fas fa-broadcast-tower me-2"></i>Cloudflare Stream</div>
+                    <p class="mb-2">Plataforma de streaming de video optimizada y escalable.</p>
+                    <ul class="feature-list">
+                        <li>Codificación automática de videos</li>
+                        <li>Streaming adaptativo (HLS)</li>
+                        <li>CDN global integrado</li>
+                        <li>Analytics de visualización</li>
+                        <li>Protección contra hotlinking</li>
+                    </ul>
+                </div>
+
+                <div class="api-example">
+                    <div class="api-name"><i class="fas fa-film me-2"></i>Vimeo API</div>
+                    <p class="mb-2">API profesional para hosting y streaming de video de alta calidad.</p>
+                    <ul class="feature-list">
+                        <li>Upload de videos</li>
+                        <li>Player personalizable</li>
+                        <li>Videos privados con contraseña</li>
+                        <li>Estadísticas detalladas</li>
+                        <li>Live streaming profesional</li>
+                    </ul>
+                </div>
+
+                <div class="platform-grid mt-4">
+                    <div class="platform-item">
+                        <i class="fas fa-microphone"></i>
+                        <h4 class="h6 fw-bold mt-2">SoundCloud API</h4>
+                        <p class="small text-muted mb-0">Streaming de audio y podcasts</p>
+                    </div>
+                    <div class="platform-item">
+                        <i class="fas fa-podcast"></i>
+                        <h4 class="h6 fw-bold mt-2">iTunes API</h4>
+                        <p class="small text-muted mb-0">Catálogo de música y podcasts</p>
+                    </div>
+                    <div class="platform-item">
+                        <i class="fas fa-play-circle"></i>
+                        <h4 class="h6 fw-bold mt-2">Dailymotion API</h4>
+                        <p class="small text-muted mb-0">Plataforma de video alternativa</p>
+                    </div>
+                </div>
+
+                <div class="info-alert">
+                    <i class="fas fa-lightbulb"></i>
+                    <strong>Casos de Uso:</strong> Plataformas educativas con video, aplicaciones de música, 
+                    portales de entretenimiento, agregadores de contenido, aplicaciones de streaming en vivo, 
+                    reproductores personalizados.
+                </div>
+            </div>
+
+            <!-- Conclusión -->
+            <div class="card border-0 shadow-lg">
+                <div class="card-body p-5 text-center">
+                    <i class="fas fa-graduation-cap display-3 text-primary mb-4"></i>
+                    <h3 class="fw-bold mb-3">Resumen de la Unidad 2</h3>
+                    <p class="lead text-muted mb-4">
+                        Esta unidad ha cubierto las principales APIs y servicios para implementar funcionalidades 
+                        modernas en aplicaciones web, desde geolocalización hasta plataformas de streaming. 
+                        La integración de estos servicios permite crear aplicaciones robustas y escalables 
+                        aprovechando la infraestructura de plataformas consolidadas.
+                    </p>
+                    <div class="d-flex gap-3 justify-content-center flex-wrap">
+                        <a href="unidad1.html" class="btn btn-outline-primary">
+                            <i class="fas fa-arrow-left me-2"></i>Unidad Anterior
+                        </a>
+                        <a href="index.html" class="btn btn-primary">
+                            <i class="fas fa-home me-2"></i>Volver al Inicio
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <h5 class="fw-bold mb-3">
+                        <i class="fas fa-code me-2"></i>Los CMMP
+                    </h5>
+                    <p class="small">Equipo dedicado al desarrollo de aplicaciones web orientadas a servicios con las mejores prácticas de la industria.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="fw-bold mb-3">Información Académica</h5>
+                    <ul class="list-unstyled small">
+                        <li><i class="fas fa-university me-2"></i>Universidad Tecnológica</li>
+                        <li><i class="fas fa-book me-2"></i>App Web Orientada a Servicios</li>
+                        <li><i class="fas fa-users me-2"></i>DSMA</li>
+                        <li><i class="fas fa-calendar me-2"></i>2025</li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="fw-bold mb-3">Enlaces</h5>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="footer-link"><i class="fab fa-github fa-2x"></i></a>
+                        <a href="equipo.html" class="footer-link"><i class="fas fa-users fa-2x"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center small">
+                <p class="mb-0">&copy; 2025 Los CMMP - Todos los derechos reservados</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Efecto scroll en navbar
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>

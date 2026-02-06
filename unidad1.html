@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unidad 1 - Los CMMP</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style/styles.css">
+    <style>
+        .topic-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .topic-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient);
+        }
+
+        .topic-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(99, 102, 241, 0.2);
+            border-color: var(--primary);
+        }
+
+        .topic-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+            transition: all 0.3s;
+        }
+
+        .topic-card:hover .topic-icon {
+            transform: rotate(5deg) scale(1.1);
+        }
+
+        .topic-title {
+            color: var(--dark);
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .topic-description {
+            color: #64748b;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+
+        .concept-box {
+            background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            border-left: 4px solid var(--primary);
+        }
+
+        .concept-title {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .feature-list li {
+            padding: 0.75rem 0;
+            padding-left: 2rem;
+            position: relative;
+            color: #475569;
+            transition: all 0.3s;
+        }
+
+        .feature-list li::before {
+            content: '\f00c';
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-size: 1rem;
+        }
+
+        .feature-list li:hover {
+            padding-left: 2.5rem;
+            color: var(--primary);
+        }
+
+        .principle-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin: 0.25rem;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+        }
+
+        .architecture-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .architecture-item {
+            background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .architecture-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.2);
+        }
+
+        .architecture-item i {
+            font-size: 3rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .info-alert {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-left: 4px solid #3b82f6;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+
+        .info-alert i {
+            color: #3b82f6;
+            margin-right: 0.5rem;
+        }
+
+        .standard-card {
+            background: white;
+            border: 2px solid #e0e7ff;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+        }
+
+        .standard-card:hover {
+            border-color: var(--primary);
+            transform: translateX(8px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.15);
+        }
+
+        .standard-header {
+            display: inline-block;
+            background: var(--gradient);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .code-example {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .comparison-table {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin: 1.5rem 0;
+        }
+
+        .comparison-table th {
+            background: var(--gradient);
+            color: white;
+            padding: 1rem;
+            font-weight: 700;
+        }
+
+        .comparison-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e0e7ff;
+        }
+
+        .comparison-table tr:hover {
+            background: #f8fafc;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-code"></i>
+                <span>Portafolio CMMP</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="fas fa-home me-1"></i>Inicio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="unidad1.html">
+                            <i class="fas fa-book me-1"></i>Unidad 1
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="unidad2.html">
+                            <i class="fas fa-plug me-1"></i>Unidad 2
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">
+                            <i class="fas fa-lock me-1"></i>Unidad 3
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">
+                            <i class="fas fa-lock me-1"></i>Unidad 4
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle profile-link" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-users-cog"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="equipo.html">
+                                <i class="fas fa-users me-2"></i>Conoce al Equipo
+                            </a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mx-auto text-center text-white">
+                    <h1 class="display-4 fw-bold mb-3 animate-slide-in">Unidad 1</h1>
+                    <h2 class="h3 mb-4 fade-in-delay-1">Introducción al Desarrollo Web Orientado a Servicios</h2>
+                    <p class="lead opacity-90 fade-in-delay-2">
+                        Fundamentos de SOA, arquitecturas de servicios web y conceptos esenciales de APIs
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="py-5">
+        <div class="container">
+            <!-- Introducción a SOA -->
+            <div class="topic-card fade-in">
+                <div class="topic-icon">
+                    <i class="fas fa-sitemap"></i>
+                </div>
+                <h2 class="topic-title">1. Arquitectura Orientada a Servicios (SOA)</h2>
+                <p class="topic-description">
+                    La Arquitectura Orientada a Servicios (SOA) es un estilo de diseño de software donde las 
+                    funcionalidades se ofrecen como servicios independientes y reutilizables que se comunican a 
+                    través de una red mediante protocolos estándar.
+                </p>
+
+                <h3 class="h5 fw-bold text-primary mt-4 mb-3">¿Qué es SOA?</h3>
+                
+                <div class="concept-box">
+                    <div class="concept-title"><i class="fas fa-cube me-2"></i>Definición</div>
+                    <p class="mb-0">
+                        SOA es un paradigma de arquitectura para diseñar y desarrollar sistemas distribuidos donde 
+                        la lógica de negocio se organiza en servicios autónomos que pueden ser descubiertos, 
+                        accedidos y orquestados de manera flexible.
+                    </p>
+                </div>
+
+                <h3 class="h5 fw-bold text-primary mt-4 mb-3">Características Principales de SOA</h3>
+                <ul class="feature-list">
+                    <li><strong>Servicios Débilmente Acoplados:</strong> Los servicios son independientes y pueden modificarse sin afectar a otros</li>
+                    <li><strong>Reusabilidad:</strong> Los servicios pueden ser utilizados por múltiples aplicaciones</li>
+                    <li><strong>Interoperabilidad:</strong> Funcionan en diferentes plataformas y tecnologías</li>
+                    <li><strong>Descubribilidad:</strong> Los servicios pueden ser encontrados y descritos mediante metadatos</li>
+                    <li><strong>Escalabilidad:</strong> Permiten escalar componentes individuales según necesidad</li>
+                    <li><strong>Autonomía:</strong> Cada servicio controla su propia lógica y datos</li>
+                </ul>
+
+                <h3 class="h5 fw-bold text-primary mt-4 mb-3">Componentes de SOA</h3>
+                
+                <div class="architecture-grid">
+                    <div class="architecture-item">
+                        <i class="fas fa-server"></i>
+                        <h4 class="h6 fw-bold mt-2">Proveedor de Servicios</h4>
+                        <p class="small text-muted mb-0">Crea y publica servicios disponibles</p>
+                    </div>
+                    <div class="architecture-item">
+                        <i class="fas fa-search"></i>
+                        <h4 class="h6 fw-bold mt-2">Registro de Servicios</h4>
+                        <p class="small text-muted mb-0">Directorio donde se publican servicios</p>
+                    </div>
+                    <div class="architecture-item">
+                        <i class="fas fa-user"></i>
+                        <h4 class="h6 fw-bold mt-2">Consumidor de Servicios</h4>
+                        <p class="small text-muted mb-0">Busca y utiliza los servicios</p>
+                    </div>
+                    <div class="architecture-item">
+                        <i class="fas fa-random"></i>
+                        <h4 class="h6 fw-bold mt-2">Bus de Servicios (ESB)</h4>
+                        <p class="small text-muted mb-0">Facilita la comunicación entre servicios</p>
+                    </div>
+                </div>
+
+                <div class="info-alert">
+                    <i class="fas fa-lightbulb"></i>
+                    <strong>Ventajas de SOA:</strong> Reutilización de código, mantenimiento simplificado, 
+                    integración más fácil entre sistemas heterogéneos, mayor agilidad en el desarrollo y 
+                    mejor escalabilidad del sistema.
+                </div>
+            </div>
+
+            <!-- Servicios Web -->
+            <div class="topic-card fade-in">
+                <div class="topic-icon">
+                    <i class="fas fa-globe"></i>
+                </div>
+                <h2 class="topic-title">2. Servicios Web</h2>
+                <p class="topic-description">
+                    Los servicios web son componentes de software diseñados para soportar interacciones 
+                    máquina-a-máquina sobre una red, utilizando estándares abiertos como HTTP, XML y JSON.
+                </p>
+
+                <h3 class="h5 fw-bold text-primary mt-4 mb-3">Tipos de Servicios Web</h3>
+
+                <div class="concept-box">
+                    <div class="concept-title"><i class="fas fa-code me-2"></i>SOAP (Simple Object Access Protocol)</div>
+                    <p class="mb-2">
+                        Protocolo basado en XML para intercambio de información estructurada en servicios web.
+                    </p>
+                    <ul class="feature-list mb-3">
+                        <li>Usa XML para mensajes</li>
+                        <li>Protocolo más formal y estricto</li>
+                        <li>Soporta transacciones complejas</li>
+                        <li>Ideal para operaciones críticas y empresariales</li>
+                        <li>Incluye estándares de seguridad (WS-Security)</li>
+                    </ul>
+                    <div class="code-example">
+&lt;?xml version="1.0"?&gt;
+&lt;soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"&gt;
+  &lt;soap:Body&gt;
+    &lt;getUser&gt;
+      &lt;userId&gt;123&lt;/userId&gt;
+    &lt;/getUser&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <div class="concept-title"><i class="fas fa-exchange-alt me-2"></i>REST (Representational State Transfer)</div>
+                    <p class="mb-2">
+                        Estilo arquitectónico que utiliza HTTP y sus métodos para crear APIs web escalables.
+                    </p>
+                    <ul class="feature-list mb-3">
+                        <li>Usa métodos HTTP (GET, POST, PUT, DELETE)</li>
+                        <li>Formato flexible (JSON, XML, HTML)</li>
+                        <li>Stateless (sin estado)</li>
+                        <li>Más simple y ligero que SOAP</li>
+                        <li>Ideal para aplicaciones web y móviles</li>
+                        <li>Cacheable y escalable</li>
+                    </ul>
+                    <div class="code-example">
+// Ejemplo de solicitud REST
+GET /api/users/123 HTTP/1.1
+Host: ejemplo.com
+Accept: application/json
+
+// Respuesta
+{
+  "id": 123,
+  "nombre": "Juan Pérez",
+  "email": "juan@example.com"
+}
+                    </div>
+                </div>
+
+                <h3 class="h5 fw-bold text-primary mt-4 mb-3">Comparación SOAP vs REST</h3>
+                
+                <div class="comparison-table">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Característica</th>
+                                <th>SOAP</th>
+                                <th>REST</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Protocolo</strong></td>
+                                <td>Protocolo estricto</td>
+                                <td>Estilo arquitectónico</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Formato</strong></td>
+                                <td>Solo XML</td>
+                                <td>JSON, XML, HTML, texto</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Complejidad</strong></td>
+                                <td>Más complejo</td>
+                                <td>Más simple</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Rendimiento</strong></td>
+                                <td>Más lento (XML pesado)</td>
+                                <td>Más rápido (JSON ligero)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Seguridad</strong></td>
+                                <td>WS-Security integrado</td>
+                                <td>HTTPS, OAuth, JWT</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Casos de uso</strong></td>
+                                <td>Empresas, transacciones</td>
+                                <td>Web, móvil, APIs públicas</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="info-alert mt-3">
+                    <i class="fas fa-lightbulb"></i>
+                    <strong>Recomendación:</strong> REST es preferido para la mayoría de aplicaciones web modernas 
+                    por su simplicidad y eficiencia. SOAP se usa en entornos empresariales que requieren 
+                    transacciones complejas y alta seguridad.
+                </div>
+            </div>
+
+            <!-- Principios REST -->
+            <div class="topic-card fade-in">
+                <div class="topic-icon">
+                    <i class="fas fa-list-check"></i>
+                </div>
+                <h2 class="topic-title">3. Principios de REST</h2>
+                <p class="topic-description">
+                    REST (Representational State Transfer) se basa en un conjunto de principios arquitectónicos 
+                    que permiten crear APIs web escalables, mantenibles y eficientes.
+                </p>
+
+                <h3 class="h5 fw-bold text-primary mt-4 mb-3">Los 6 Principios Fundamentales de REST</h3>
+
+                <div class="standard-card">
+                    <span class="standard-header">1. Cliente-Servidor</span>
+                    <p class="mb-2 mt-2">
+                        Separación entre la interfaz de usuario (cliente) y el almacenamiento de datos (servidor).
+                    </p>
+                    <ul class="feature-list">
+                        <li>Permite desarrollo independiente del cliente y servidor</li>
+                        <li>Mejora la portabilidad de la interfaz</li>
+                        <li>Mejora la escalabilidad del servidor</li>
+                    </ul>
+                </div>
+
+                <div class="standard-card">
+                    <span class="standard-header">2. Sin Estado (Stateless)</span>
+                    <p class="mb-2 mt-2">
+                        Cada petición del cliente al servidor debe contener toda la información necesaria.
+                    </p>
+                    <ul class="feature-list">
+                        <li>El servidor no almacena contexto del cliente entre peticiones</li>
+                        <li>Mejora la escalabilidad</li>
+                        <li>Simplifica la implementación del servidor</li>
+                    </ul>
+                </div>
+
+                <div class="standard-card">
+                    <span class="standard-header">3. Cacheable</span>
+                    <p class="mb-2 mt-2">
+                        Las respuestas deben indicar si pueden ser almacenadas en caché o no.
+                    </p>
+                    <ul class="feature-list">
+                        <li>Reduce la carga del servidor</li>
+                        <li>Mejora el rendimiento percibido</li>
+                        <li>Usa headers HTTP (Cache-Control, ETag)</li>
+                    </ul>
+                </div>
+
+                <div class="standard-card">
+                    <span class="standard-header">4. Interfaz Uniforme</span>
+                    <p class="mb-2 mt-2">
+                        Uso consistente de convenciones y estándares en toda la API.
+                    </p>
+                    <ul class="feature-list">
+                        <li>Identificación de recursos mediante URIs</li>
+                        <li>Manipulación de recursos mediante representaciones</li>
+                        <li>Mensajes auto-descriptivos</li>
+                        <li>HATEOAS (Hypermedia as the Engine of Application State)</li>
+                    </ul>
+                </div>
+
+                <div class="standard-card">
+                    <span class="standard-header">5. Sistema en Capas</span>
+                    <p class="mb-2 mt-2">
+                        La arquitectura puede estar compuesta de capas jerárquicas.
+                    </p>
+                    <ul class="feature-list">
+                        <li>El cliente no sabe si está conectado directamente al servidor final</li>
+                        <li>Permite balanceadores de carga, proxies, gateways</li>
+                        <li>Mejora la escalabilidad y seguridad</li>
+                    </ul>
+                </div>
+
+                <div class="standard-card">
+                    <span class="standard-header">6. Código bajo Demanda (Opcional)</span>
+                    <p class="mb-2 mt-2">
+                        Los servidores pueden extender la funcionalidad del cliente enviando código ejecutable.
+                    </p>
+                    <ul class="feature-list">
+                        <li>JavaScript, applets, etc.</li>
+                        <li>Simplifica a los clientes</li>
+                        <li>Principio opcional en REST</li>
+                    </ul>
+                </div>
+
+                <h3 class="h5 fw-bold text-primary mt-4 mb-3">Métodos HTTP en REST</h3>
+
+                <div class="architecture-grid">
+                    <div class="architecture-item">
+                        <i class="fas fa-download"></i>
+                        <h4 class="h6 fw-bold mt-2">GET</h4>
+                        <p class="small text-muted mb-0">Obtener recursos</p>
+                    </div>
+                    <div class="architecture-item">
+                        <i class="fas fa-plus"></i>
+                        <h4 class="h6 fw-bold mt-2">POST</h4>
+                        <p class="small text-muted mb-0">Crear nuevos recursos</p>
+                    </div>
+                    <div class="architecture-item">
+                        <i class="fas fa-edit"></i>
+                        <h4 class="h6 fw-bold mt-2">PUT</h4>
+                        <p class="small text-muted mb-0">Actualizar recursos completos</p>
+                    </div>
+                    <div class="architecture-item">
+                        <i class="fas fa-pencil-alt"></i>
+                        <h4 class="h6 fw-bold mt-2">PATCH</h4>
+                        <p class="small text-muted mb-0">Actualizar parcialmente</p>
+                    </div>
+                    <div class="architecture-item">
+                        <i class="fas fa-trash"></i>
+                        <h4 class="h6 fw-bold mt-2">DELETE</h4>
+                        <p class="small text-muted mb-0">Eliminar recursos</p>
+                    </div>
+                    <div class="architecture-item">
+                        <i class="fas fa-info-circle"></i>
+                        <h4 class="h6 fw-bold mt-2">OPTIONS</h4>
+                        <p class="small text-muted mb-0">Obtener opciones disponibles</p>
+                    </div>
+                </div>
+
+                <div class="code-example">
+// Ejemplos de endpoints RESTful
+
+GET    /api/usuarios          // Listar todos los usuarios
+GET    /api/usuarios/5        // Obtener usuario con ID 5
+POST   /api/usuarios          // Crear nuevo usuario
+PUT    /api/usuarios/5        // Actualizar usuario 5 (completo)
+PATCH  /api/usuarios/5        // Actualizar usuario 5 (parcial)
+DELETE /api/usuarios/5        // Eliminar usuario 5
+                </div>
+            </div>
+
+            <!-- Estándares Web -->
+            <div class="topic-card fade-in">
+                <div class="topic-icon">
+                    <i class="fas fa-certificate"></i>
+                </div>
+                <h2 class="topic-title">4. Estándares de Servicios Web</h2>
+                <p class="topic-description">
+                    Los estándares web son especificaciones técnicas que aseguran la interoperabilidad, 
+                    seguridad y calidad de los servicios web.
+                </p>
+
+                <h3 class="h5 fw-bold text-primary mt-4 mb-3">Principales Estándares</h3>
+
+                <div class="concept-box">
+                    <div class="concept-title"><i class="fas fa-file-code me-2"></i>WSDL (Web Services Description Language)</div>
+                    <p class="mb-2">
+                        Lenguaje XML para describir servicios web y cómo acceder a ellos.
+                    </p>
+                    <ul class="feature-list">
+                        <li>Define operaciones disponibles</li>
+                        <li>Especifica parámetros de entrada y salida</li>
+                        <li>Indica ubicación del servicio</li>
+                        <li>Usado principalmente con SOAP</li>
+                    </ul>
+                </div>
+
+                <div class="concept-box">
+                    <div class="concept-title"><i class="fas fa-book me-2"></i>UDDI (Universal Description, Discovery and Integration)</div>
+                    <p class="mb-2">
+                        Directorio para registro y descubrimiento de servicios web.
+                    </p>
+                    <ul class="feature-list">
+                        <li>Registro centralizado de servicios</li>
+                        <li>Clasificación y búsqueda de servicios</li>
+                        <li>Metadatos de servicios</li>
+                    </ul>
+                </div>
+
+                <div class="concept-box">
+                    <div class="concept-title"><i class="fas fa-shield-alt me-2"></i>WS-Security</div>
+                    <p class="mb-2">
+                        Estándar de seguridad para servicios web SOAP.
+                    </p>
+                    <ul class="feature-list">
+                        <li>Autenticación de usuarios</li>
+                        <li>Integridad de mensajes</li>
+                        <li>Confidencialidad mediante cifrado</li>
+                        <li>Firmas digitales</li>
+                    </ul>
+                </div>
+
+                <div class="concept-box">
+                    <div class="concept-title"><i class="fas fa-file-alt me-2"></i>JSON Schema</div>
+                    <p class="mb-2">
+                        Vocabulario para validar y documentar datos JSON.
+                    </p>
+                    <ul class="feature-list">
+                        <li>Define estructura de datos JSON</li>
+                        <li>Validación de tipos de datos</li>
+                        <li>Documentación auto-generada</li>
+                        <li>Usado en APIs REST modernas</li>
+                    </ul>
+                </div>
+
+                <div class="concept-box">
+                    <div class="concept-title"><i class="fas fa-file-contract me-2"></i>OpenAPI (Swagger)</div>
+                    <p class="mb-2">
+                        Especificación estándar para describir APIs RESTful.
+                    </p>
+                    <ul class="feature-list">
+                        <li>Documentación interactiva de APIs</li>
+                        <li>Generación automática de código cliente</li>
+                        <li>Testing de endpoints</li>
+                        <li>Estándar de la industria para REST</li>
+                    </ul>
+                    <div class="code-example">
+openapi: 3.0.0
+info:
+  title: API de Usuarios
+  version: 1.0.0
+paths:
+  /usuarios:
+    get:
+      summary: Listar usuarios
+      responses:
+        '200':
+          description: Lista exitosa
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Usuario'
+                    </div>
+                </div>
+
+                <h3 class="h5 fw-bold text-primary mt-4 mb-3">Formatos de Intercambio de Datos</h3>
+                
+                <div class="architecture-grid">
+                    <div class="architecture-item">
+                        <i class="fas fa-code"></i>
+                        <h4 class="h6 fw-bold mt-2">JSON</h4>
+                        <p class="small text-muted mb-0">Ligero, legible, estándar web</p>
+                    </div>
+                    <div class="architecture-item">
+                        <i class="fas fa-file-code"></i>
+                        <h4 class="h6 fw-bold mt-2">XML</h4>
+                        <p class="small text-muted mb-0">Extensible, estructurado, validable</p>
+                    </div>
+                    <div class="architecture-item">
+                        <i class="fas fa-brackets-curly"></i>
+                        <h4 class="h6 fw-bold mt-2">YAML</h4>
+                        <p class="small text-muted mb-0">Legible, configuración</p>
+                    </div>
+                    <div class="architecture-item">
+                        <i class="fas fa-table"></i>
+                        <h4 class="h6 fw-bold mt-2">CSV</h4>
+                        <p class="small text-muted mb-0">Tabular, simple, exportación</p>
+                    </div>
+                </div>
+
+                <div class="info-alert">
+                    <i class="fas fa-lightbulb"></i>
+                    <strong>Mejores Prácticas:</strong> Usa OpenAPI/Swagger para documentar APIs REST, 
+                    JSON como formato principal de datos, versionado de API (v1, v2), 
+                    implementa autenticación (OAuth 2.0, JWT) y maneja errores consistentemente 
+                    con códigos HTTP apropiados.
+                </div>
+            </div>
+
+            <!-- Conclusión -->
+            <div class="card border-0 shadow-lg">
+                <div class="card-body p-5 text-center">
+                    <i class="fas fa-graduation-cap display-3 text-primary mb-4"></i>
+                    <h3 class="fw-bold mb-3">Resumen de la Unidad 1</h3>
+                    <p class="lead text-muted mb-4">
+                        Esta unidad cubre los fundamentos esenciales del desarrollo web orientado a servicios, 
+                        incluyendo la arquitectura SOA, tipos de servicios web (SOAP y REST), principios REST 
+                        y los estándares que rigen la interoperabilidad entre sistemas distribuidos.
+                    </p>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-3">
+                            <div class="principle-badge">SOA</div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="principle-badge">REST vs SOAP</div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="principle-badge">Principios REST</div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="principle-badge">Estándares Web</div>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 justify-content-center flex-wrap">
+                        <a href="index.html" class="btn btn-outline-primary">
+                            <i class="fas fa-home me-2"></i>Volver al Inicio
+                        </a>
+                        <a href="unidad2.html" class="btn btn-primary">
+                            <i class="fas fa-arrow-right me-2"></i>Siguiente Unidad
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <h5 class="fw-bold mb-3">
+                        <i class="fas fa-code me-2"></i>Los CMMP
+                    </h5>
+                    <p class="small">Equipo dedicado al desarrollo de aplicaciones web orientadas a servicios con las mejores prácticas de la industria.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="fw-bold mb-3">Información Académica</h5>
+                    <ul class="list-unstyled small">
+                        <li><i class="fas fa-university me-2"></i>Universidad Tecnológica</li>
+                        <li><i class="fas fa-book me-2"></i>App Web Orientada a Servicios</li>
+                        <li><i class="fas fa-users me-2"></i>DSMA</li>
+                        <li><i class="fas fa-calendar me-2"></i>2025</li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="fw-bold mb-3">Enlaces</h5>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="footer-link"><i class="fab fa-github fa-2x"></i></a>
+                        <a href="equipo.html" class="footer-link"><i class="fas fa-users fa-2x"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center small">
+                <p class="mb-0">&copy; 2025 Los CMMP - Todos los derechos reservados</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Efecto scroll en navbar
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>
